@@ -17,6 +17,9 @@ def list_users():
         print(f"{i+1}. {user}")
 
 def create_account():
+    if(len(users) <= 0):
+        print("You need to have a user to create an account")
+        return
     list_users()
     idx = int(input("Select user number: ")) - 1
     print("Account Type:")
