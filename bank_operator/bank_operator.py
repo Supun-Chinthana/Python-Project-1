@@ -6,6 +6,11 @@ users = []
 def create_user():
     name = input("Enter name: ")
     email = input("Enter email: ")
+
+    if ('@' not in email) or ('.com' not in email) or (" " in email):
+        print("Invalid account type!")
+        return
+    
     user = User(name, email)
     if not user.is_valid_email(email):
         print("Email is invalid!")
@@ -18,15 +23,23 @@ def list_users():
 
 def create_account():
     if(len(users) <= 0):
-        print("You need to have a user to create an account")
+        print("No users available. Please create a user first.")
         return
     list_users()
     idx = int(input("Select user number: ")) - 1
+
+    if idx + 1 > len(users):
+        print("Invalid user selection.\n")
+        return
+
     print("Account Type:")
     print("1. Savings Account")
     print("2. Students Account")
     print("3. Current Account")
     account_choice = int(input("Enter your choice (1, 2, 3): "))
+    if account_choice > 3:
+        print("Invalid Account type")
+        return
     amount = float(input("Enter initial deposit: "))
 
     if account_choice == 1:
@@ -45,6 +58,9 @@ def create_account():
 def deposit_money():
     list_users()
     idx = int(input("Select user: ")) - 1
+    if idx + 1 > len(users):
+        print("Invalid user selection.\n")
+        return
     user = users[idx]
     for i, acc in enumerate(user.accounts):
         print(f"{i+1}. Balance: Rs. {acc.get_balance()}")
@@ -55,6 +71,9 @@ def deposit_money():
 def withdraw_money():
     list_users()
     idx = int(input("Select user: ")) - 1
+    if idx + 1 > len(users):
+        print("Invalid user selection.\n")
+        return
     user = users[idx]
     for i, acc in enumerate(user.accounts):
         print(f"{i+1}. Balance: Rs. {acc.get_balance()}")
@@ -69,9 +88,14 @@ def withdraw_money():
 def view_transactions():
     list_users()
     idx = int(input("Select user: ")) - 1
+    if idx + 1 > len(users):
+        print("Invalid user selection.\n")
+        return
     user = users[idx]
     for i, acc in enumerate(user.accounts):
         print(f"\n{acc.get_account_type()} {i+1} - Balance: Rs. {acc.get_balance()}")
         for tx in acc.get_transaction_history():
             print(tx)
+
+
 
